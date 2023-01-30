@@ -79,7 +79,21 @@ class Task  extends Component {
   }
 }
 
+Task.defaultProps = {
+  date: new Date(),
+  label: "Task",
+  done: false,
+  change: false
+}
 
+Task.propsTypes = {
+  date:   PropTypes.number,
+  label:  PropTypes.string,
+  done:   PropTypes.bool,
+  change: PropTypes.bool,
+  onToggleChange: PropTypes.func,
+  onToggleDone:   PropTypes.func
+}
 
 
 export default Task;

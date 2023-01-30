@@ -7,19 +7,6 @@ import "./footer.css"
 
 class Footer extends Component {
 
-    static defaultProps = {
-        filterValue: "all",
-    }
-     
-    static propsTypes = {
-        filterValue: PropTypes.string,
-        unfinishedTask: PropTypes.func,
-        onToggleAll: PropTypes.func,
-        onToggleActive: PropTypes.func,
-        onToggleCompleted: PropTypes.func,
-        onToggleCrear: PropTypes.func
-    }
-
     render(){
         const {onToggleActive,onToggleAll,onToggleCompleted,filterValue,onToggleCrear,unfinishedTask} = this.props
         return (
@@ -34,6 +21,19 @@ class Footer extends Component {
             </footer>
         )  
     }
+}
+
+Footer.defaultProps = {
+    filterValue: "all"
+}
+
+Footer.propsTypes = {
+    filterValue: PropTypes.string,
+    unfinishedTask: PropTypes.func,
+    onToggleAll: PropTypes.func,
+    onToggleActive: PropTypes.func,
+    onToggleCompleted: PropTypes.func,
+    onToggleCrear: PropTypes.func
 }
 
 export default Footer

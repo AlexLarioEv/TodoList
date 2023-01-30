@@ -7,18 +7,6 @@ import './task-list.css'
 
 class TaskList extends Component{
   
-  static defaultProps = {
-    todos: []
-}
- 
-  static propsTypes = {
-    todos: PropTypes.arrayOf(PropTypes.string),
-    onDeleted: PropTypes.func,
-    onToggleDone: PropTypes.func,
-    onToggleChange: PropTypes.func,
-    onRename: PropTypes.func
-}
-
   render(){
     
     const {todos, onDeleted, onToggleDone, onToggleChange,onRename  } = this.props
@@ -49,5 +37,16 @@ class TaskList extends Component{
   }
 }
 
+TaskList.defaultProp =  {
+  todos: []
+}
+
+TaskList.propsTypes ={
+  todos: PropTypes.arrayOf(PropTypes.string),
+  onDeleted: PropTypes.func,
+  onToggleDone: PropTypes.func,
+  onToggleChange: PropTypes.func,
+  onRename: PropTypes.func
+} 
 
 export default TaskList;

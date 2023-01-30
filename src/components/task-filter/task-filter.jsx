@@ -5,17 +5,6 @@ import "./task-filter.css"
 
 class TaskFilter extends Component {
 
-    static defaultProps = {
-        filterValue: "all",
-    }
-
-    static propsTypes = {
-        filterValue: PropsTypes.string,
-        onToggleAll: PropsTypes.func,
-        onToggleActive: PropsTypes.func,
-        onToggleCompleted: PropsTypes.func
-    }
-
     render(){
 
         const {onToggleAll,onToggleActive,onToggleCompleted, filterValue} = this.props
@@ -29,5 +18,16 @@ class TaskFilter extends Component {
         )
     }
 } 
+
+TaskFilter.defaultProps = {
+    filterValue: "all"
+}
+
+TaskFilter.propsTypes = {
+    filterValue: PropsTypes.string,
+    onToggleAll: PropsTypes.func,
+    onToggleActive: PropsTypes.func,
+    onToggleCompleted: PropsTypes.func
+}
 
 export default TaskFilter;
