@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import PropTypes from 'prop-types';
 
 import Task from "../task/task";
 
@@ -6,6 +7,17 @@ import './task-list.css'
 
 class TaskList extends Component{
   
+  static defaultProps = {
+    todos: []
+}
+ 
+  static propsTypes = {
+    todos: PropTypes.arrayOf(PropTypes.string),
+    onDeleted: PropTypes.func,
+    onToggleDone: PropTypes.func,
+    onToggleChange: PropTypes.func,
+    onRename: PropTypes.func
+}
 
   render(){
     

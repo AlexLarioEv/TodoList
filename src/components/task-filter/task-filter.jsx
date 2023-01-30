@@ -1,9 +1,20 @@
 import React, {Component} from "react";
+import PropsTypes from 'prop-types';
 
 import "./task-filter.css"
 
 class TaskFilter extends Component {
 
+    static defaultProps = {
+        filterValue: "all",
+    }
+
+    static propsTypes = {
+        filterValue: PropsTypes.string,
+        onToggleAll: PropsTypes.func,
+        onToggleActive: PropsTypes.func,
+        onToggleCompleted: PropsTypes.func
+    }
 
     render(){
 

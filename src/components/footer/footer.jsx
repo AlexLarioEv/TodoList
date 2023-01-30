@@ -1,10 +1,24 @@
 import React, {Component} from "react";
+import PropTypes from 'prop-types';
 
 import TaskFilter from "../task-filter/task-filter"
 
 import "./footer.css"
 
 class Footer extends Component {
+
+    static defaultProps = {
+        filterValue: "all",
+    }
+     
+    static propsTypes = {
+        filterValue: PropTypes.string,
+        unfinishedTask: PropTypes.func,
+        onToggleAll: PropTypes.func,
+        onToggleActive: PropTypes.func,
+        onToggleCompleted: PropTypes.func,
+        onToggleCrear: PropTypes.func
+    }
 
     render(){
         const {onToggleActive,onToggleAll,onToggleCompleted,filterValue,onToggleCrear,unfinishedTask} = this.props
