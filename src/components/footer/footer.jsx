@@ -1,39 +1,41 @@
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-import TaskFilter from "../task-filter/task-filter"
+import TaskFilter from '../task-filter/task-filter'
 
-import "./footer.css"
+import './footer.css'
 
 class Footer extends Component {
-
-    render(){
-        const {onToggleActive,onToggleAll,onToggleCompleted,filterValue,onToggleCrear,unfinishedTask} = this.props
-        return (
-            <footer className="footer">
-                <span className="todo-count">{unfinishedTask()} items left</span>
-                <TaskFilter
-                    onToggleAll = {() => onToggleAll("all")}
-                    onToggleActive = {()=>onToggleActive("active")}
-                    onToggleCompleted = {()=>onToggleCompleted("completed")}
-                    filterValue = {filterValue}/>
-                <button className="clear-completed" onClick={onToggleCrear}>Clear completed</button>
-            </footer>
-        )  
-    }
+  render() {
+    const { onToggleActive, onToggleAll, onToggleCompleted, filterValue, onToggleCrear, unfinishedTask } = this.props
+    return (
+      <footer className="footer">
+        <span className="todo-count">{unfinishedTask()} items left</span>
+        <TaskFilter
+          onToggleAll={() => onToggleAll('all')}
+          onToggleActive={() => onToggleActive('active')}
+          onToggleCompleted={() => onToggleCompleted('completed')}
+          filterValue={filterValue}
+        />
+        <button className="clear-completed" onClick={onToggleCrear}>
+          Clear completed
+        </button>
+      </footer>
+    )
+  }
 }
 
 Footer.defaultProps = {
-    filterValue: "all"
+  filterValue: 'all',
 }
 
 Footer.propsTypes = {
-    filterValue: PropTypes.string,
-    unfinishedTask: PropTypes.func,
-    onToggleAll: PropTypes.func,
-    onToggleActive: PropTypes.func,
-    onToggleCompleted: PropTypes.func,
-    onToggleCrear: PropTypes.func
+  filterValue: PropTypes.string,
+  unfinishedTask: PropTypes.func,
+  onToggleAll: PropTypes.func,
+  onToggleActive: PropTypes.func,
+  onToggleCompleted: PropTypes.func,
+  onToggleCrear: PropTypes.func,
 }
 
 export default Footer
