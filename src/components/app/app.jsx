@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import NewTaskForm from '../new-task-form/new-task-form'
 import TaskList from '../task-list/task-list'
 import Footer from '../footer/footer'
 
 class App extends Component {
-  maxId = 100
-
   state = {
     todoData: [],
     filterValue: 'all',
@@ -16,8 +15,7 @@ class App extends Component {
     return {
       label,
       done: false,
-      change: false,
-      id: this.maxId++,
+      id: uuidv4(),
       date: new Date(),
     }
   }
@@ -52,8 +50,13 @@ class App extends Component {
 
   onToggleChange = (id) => {
     this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((el) => el.id === id)
+
+      const oldItem = todoData[idx]
+      const newItem = { ...oldItem, done: 'change' }
+
       return {
-        todoData: this.tooggleProperty(todoData, id, 'change'),
+        todoData: [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)],
       }
     })
   }
@@ -65,7 +68,7 @@ class App extends Component {
       const oldItem = todoData[idx]
       const newItem = {
         ...oldItem,
-        change: !oldItem.change,
+        done: !oldItem.done,
         label: text,
       }
 
@@ -103,11 +106,19 @@ class App extends Component {
     }
   }
 
-  cleraList = () => {
-    this.setState({ todoData: [] })
+  clerList = () => {
+    this.setState(({ todoData }) => {
+      const oldArray = todoData.filter((item) => !item.done)
+      return {
+        todoData: oldArray,
+      }
+    })
   }
 
-  counterTask = () => this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
+  counterTask = () => {
+    const valueFalse = this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
+    return this.state.todoData.reduce((acc, el) => acc + (el.done === 'change' ? 1 : 0), valueFalse)
+  }
 
   render() {
     const visableItem = this.filter(this.state.todoData, this.state.filterValue)
@@ -126,7 +137,7 @@ class App extends Component {
           onToggleActive={this.toggleFilter}
           onToggleCompleted={this.toggleFilter}
           filterValue={this.state.filterValue}
-          onToggleCrear={this.cleraList}
+          onToggleCrear={this.clerList}
           unfinishedTask={this.counterTask}
         />
       </section>
