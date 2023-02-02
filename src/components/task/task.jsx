@@ -70,20 +70,20 @@ class Task extends Component {
           </li>
         )
       default:
+        return (
+          <li>
+            <div className="view">
+              <input className="toggle" type="checkbox" onClick={onToggleDone} checked={!!done} readOnly />
+              <label>
+                <span className="description"> {label}</span>
+                <span className="created">{formatDistanceToNow(date, { addSuffix: true })}</span>
+              </label>
+              <button className="icon icon-edit" onClick={onToggleChange}></button>
+              <button className="icon icon-destroy" onClick={this.props.onDeleted}></button>
+            </div>
+          </li>
+        )
     }
-    return (
-      <li>
-        <div className="view">
-          <input className="toggle" type="checkbox" onClick={onToggleDone} checked={!!done} readOnly />
-          <label>
-            <span className="description"> {label}</span>
-            <span className="created">{formatDistanceToNow(date, { addSuffix: true })}</span>
-          </label>
-          <button className="icon icon-edit" onClick={onToggleChange}></button>
-          <button className="icon icon-destroy" onClick={this.props.onDeleted}></button>
-        </div>
-      </li>
-    )
   }
 }
 
