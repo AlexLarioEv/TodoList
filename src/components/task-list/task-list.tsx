@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
+import { IDoto } from '../../types/data'
 import Task from '../task/task'
 
 import './task-list.css'
 
-class TaskList extends Component {
+interface ListProps {
+  todos: Array<IDoto>
+  onDeleted: (id: string) => void
+  onToggleDone: (id: string) => void
+  onToggleChange: (id: string) => void
+  onRename: (id: string, text: string) => void
+}
+
+class TaskList extends Component<ListProps, object> {
   render() {
     const { todos, onDeleted, onToggleDone, onToggleChange, onRename } = this.props
     const elements = todos.map((item) => {
@@ -31,18 +39,6 @@ class TaskList extends Component {
       </section>
     )
   }
-}
-
-TaskList.defaultProp = {
-  todos: [],
-}
-
-TaskList.propsTypes = {
-  todos: PropTypes.arrayOf(PropTypes.string),
-  onDeleted: PropTypes.func,
-  onToggleDone: PropTypes.func,
-  onToggleChange: PropTypes.func,
-  onRename: PropTypes.func,
 }
 
 export default TaskList

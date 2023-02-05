@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
-import PropsTypes from 'prop-types'
+
+import { IFilter } from '../../types/data'
 
 import './task-filter.css'
 
-class TaskFilter extends Component {
+interface Props extends IFilter {
+  onToggleAll: () => void
+  onToggleActive: () => void
+  onToggleCompleted: () => void
+}
+
+class TaskFilter extends Component<Props, object> {
   render() {
     const { onToggleAll, onToggleActive, onToggleCompleted, filterValue } = this.props
 
@@ -27,17 +34,6 @@ class TaskFilter extends Component {
       </ul>
     )
   }
-}
-
-TaskFilter.defaultProps = {
-  filterValue: 'all',
-}
-
-TaskFilter.propsTypes = {
-  filterValue: PropsTypes.string,
-  onToggleAll: PropsTypes.func,
-  onToggleActive: PropsTypes.func,
-  onToggleCompleted: PropsTypes.func,
 }
 
 export default TaskFilter

@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
+import { AppState, IDoto } from '../../types/data'
 import NewTaskForm from '../new-task-form/new-task-form'
 import TaskList from '../task-list/task-list'
 import Footer from '../footer/footer'
 
-class App extends Component {
-  state = {
+type State = Readonly<AppState>
+
+class App extends Component<object, State> {
+  state: State = {
     todoData: [],
     filterValue: 'all',
   }
 
-  createTodoItem(label) {
+  createTodoItem(label: string) {
     return {
       label,
       done: false,
@@ -20,10 +23,10 @@ class App extends Component {
     }
   }
 
-  addItem = (text) => {
+  addItem = (text: string) => {
     const newItem = this.createTodoItem(text)
 
-    this.setState(({ todoData }) => {
+    this.setState(({ todoData }): Pick<State, 'todoData'> => {
       const newArr = [...todoData, newItem]
       return {
         todoData: newArr,
@@ -31,7 +34,7 @@ class App extends Component {
     })
   }
 
-  tooggleProperty(arr, id, propName) {
+  tooggleProperty(arr: Array<IDoto>, id: string, propName: 'done') {
     const idx = arr.findIndex((el) => el.id === id)
 
     const oldItem = arr[idx]
@@ -40,20 +43,20 @@ class App extends Component {
     return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)]
   }
 
-  onToggleDone = (id) => {
-    this.setState(({ todoData }) => {
+  onToggleDone = (id: string): void => {
+    this.setState(({ todoData }): Pick<State, 'todoData'> => {
       return {
         todoData: this.tooggleProperty(todoData, id, 'done'),
       }
     })
   }
 
-  onToggleChange = (id) => {
-    this.setState(({ todoData }) => {
+  onToggleChange = (id: string) => {
+    this.setState(({ todoData }): Pick<State, 'todoData'> => {
       const idx = todoData.findIndex((el) => el.id === id)
 
       const oldItem = todoData[idx]
-      const newItem = { ...oldItem, done: 'change' }
+      const newItem = { ...oldItem }
 
       return {
         todoData: [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)],
@@ -61,14 +64,13 @@ class App extends Component {
     })
   }
 
-  renameTask = (id, text) => {
-    this.setState(({ todoData }) => {
+  renameTask = (id: string, text: string) => {
+    this.setState(({ todoData }): Pick<State, 'todoData'> => {
       const idx = todoData.findIndex((el) => el.id === id)
 
       const oldItem = todoData[idx]
       const newItem = {
         ...oldItem,
-        done: !oldItem.done,
         label: text,
       }
 
@@ -79,7 +81,7 @@ class App extends Component {
     })
   }
 
-  deletedTask = (id) => {
+  deletedTask = (id: string) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id)
       const newData = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)]
@@ -89,11 +91,11 @@ class App extends Component {
     })
   }
 
-  toggleFilter = (text) => {
+  toggleFilter = (text: string) => {
     this.setState({ filterValue: text })
   }
 
-  filter(items, filter) {
+  filter(items: Array<IDoto>, filter: string) {
     switch (filter) {
       case 'all':
         return items
@@ -115,9 +117,9 @@ class App extends Component {
     })
   }
 
-  counterTask = () => {
+  counterTask = (): number => {
     const valueFalse = this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
-    return this.state.todoData.reduce((acc, el) => acc + (el.done === 'change' ? 1 : 0), valueFalse)
+    return this.state.todoData.reduce((acc, el) => acc + (el.done ? 1 : 0), valueFalse)
   }
 
   render() {

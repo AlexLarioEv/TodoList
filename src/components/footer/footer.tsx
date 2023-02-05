@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
+import { IFilter } from '../../types/data'
 import TaskFilter from '../task-filter/task-filter'
 
 import './footer.css'
 
-class Footer extends Component {
+interface Props extends IFilter {
+  onToggleAll: (arg0: string) => void
+  onToggleActive: (arg0: string) => void
+  onToggleCompleted: (arg0: string) => void
+  onToggleCrear: () => void
+  unfinishedTask: () => number
+}
+
+class Footer extends Component<Props, object> {
   render() {
     const { onToggleActive, onToggleAll, onToggleCompleted, filterValue, onToggleCrear, unfinishedTask } = this.props
     return (
@@ -23,19 +31,6 @@ class Footer extends Component {
       </footer>
     )
   }
-}
-
-Footer.defaultProps = {
-  filterValue: 'all',
-}
-
-Footer.propsTypes = {
-  filterValue: PropTypes.string,
-  unfinishedTask: PropTypes.func,
-  onToggleAll: PropTypes.func,
-  onToggleActive: PropTypes.func,
-  onToggleCompleted: PropTypes.func,
-  onToggleCrear: PropTypes.func,
 }
 
 export default Footer

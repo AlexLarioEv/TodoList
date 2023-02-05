@@ -1,21 +1,33 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
+
+import { IDoto } from '../../types/data'
 
 import './task.css'
 
-class Task extends Component {
+interface State {
+  label: string
+}
+
+interface Props extends IDoto {
+  onRename: (id: string, label: string) => void
+  onToggleDone: () => void
+  onToggleChange: () => void
+  onDeleted: () => void
+}
+
+class Task extends Component<Props, State> {
   state = {
     label: this.props.label,
   }
 
-  onChange = (e) => {
+  onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     this.setState({
       label: e.target.value,
     })
   }
 
-  onSubmit = (e) => {
+  onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     this.props.onRename(this.props.id, this.state.label)
   }
@@ -85,22 +97,6 @@ class Task extends Component {
         )
     }
   }
-}
-
-Task.defaultProps = {
-  date: new Date(),
-  label: 'Task',
-  done: false,
-  change: false,
-}
-
-Task.propsTypes = {
-  date: PropTypes.number,
-  label: PropTypes.string,
-  done: PropTypes.bool,
-  change: PropTypes.bool,
-  onToggleChange: PropTypes.func,
-  onToggleDone: PropTypes.func,
 }
 
 export default Task

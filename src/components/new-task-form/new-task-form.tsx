@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
 import './new-task-form.css'
 
-class NewTaskForm extends Component {
+interface State {
+  label: string
+}
+
+interface Props {
+  addItem: (arg0: string) => void
+}
+
+class NewTaskForm extends Component<Props, State> {
   state = {
     label: '',
   }
 
-  onLabeChange = (e) => {
+  onLabeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     this.setState({
       label: e.target.value,
     })
   }
 
-  onSubmit = (e) => {
+  onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    if (this.state.label !== '') {
+    if (this.state.label) {
       this.props.addItem(this.state.label)
       this.setState({
         label: '',
