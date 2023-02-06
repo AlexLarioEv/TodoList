@@ -31,6 +31,7 @@
       "quotes": ["error", "single"],
       "semi": ["error", "never"],
       "no-plusplus": "off",
+      "no-nested-ternary": "off",
       "class-methods-use-this": "off",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": 0,

@@ -9,13 +9,12 @@ interface ListProps {
   todos: Array<IDoto>
   onDeleted: (id: string) => void
   onToggleDone: (id: string) => void
-  onToggleChange: (id: string) => void
   onRename: (id: string, text: string) => void
 }
 
 class TaskList extends Component<ListProps, object> {
   render() {
-    const { todos, onDeleted, onToggleDone, onToggleChange, onRename } = this.props
+    const { todos, onDeleted, onToggleDone, onRename } = this.props
     const elements = todos.map((item) => {
       const { id, label, ...itemProps } = item
 
@@ -28,7 +27,6 @@ class TaskList extends Component<ListProps, object> {
           onRename={onRename}
           onDeleted={() => onDeleted(id)}
           onToggleDone={() => onToggleDone(id)}
-          onToggleChange={() => onToggleChange(id)}
         />
       )
     })

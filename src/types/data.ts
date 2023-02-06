@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 export interface IDoto {
   label: string
   done: boolean | string

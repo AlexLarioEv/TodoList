@@ -22,7 +22,7 @@ class NewTaskForm extends Component<Props, State> {
 
   onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    if (this.state.label) {
+    if (this.state.label.match(/\S/)) {
       this.props.addItem(this.state.label)
       this.setState({
         label: '',

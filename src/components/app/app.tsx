@@ -51,19 +51,6 @@ class App extends Component<object, State> {
     })
   }
 
-  onToggleChange = (id: string) => {
-    this.setState(({ todoData }): Pick<State, 'todoData'> => {
-      const idx = todoData.findIndex((el) => el.id === id)
-
-      const oldItem = todoData[idx]
-      const newItem = { ...oldItem }
-
-      return {
-        todoData: [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)],
-      }
-    })
-  }
-
   renameTask = (id: string, text: string) => {
     this.setState(({ todoData }): Pick<State, 'todoData'> => {
       const idx = todoData.findIndex((el) => el.id === id)
@@ -118,8 +105,7 @@ class App extends Component<object, State> {
   }
 
   counterTask = (): number => {
-    const valueFalse = this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
-    return this.state.todoData.reduce((acc, el) => acc + (el.done ? 1 : 0), valueFalse)
+    return this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
   }
 
   render() {
@@ -131,7 +117,6 @@ class App extends Component<object, State> {
           todos={visableItem}
           onDeleted={this.deletedTask}
           onToggleDone={this.onToggleDone}
-          onToggleChange={this.onToggleChange}
           onRename={this.renameTask}
         />
         <Footer
