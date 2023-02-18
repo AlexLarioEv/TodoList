@@ -34,19 +34,13 @@ class App extends Component<object, State> {
     })
   }
 
-  tooggleProperty(arr: Array<IDoto>, id: string, propName: 'done') {
-    const idx = arr.findIndex((el) => el.id === id)
-
-    const oldItem = arr[idx]
-    const newItem = { ...oldItem, [propName]: !oldItem[propName] }
-
-    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)]
-  }
-
   onToggleDone = (id: string): void => {
     this.setState(({ todoData }): Pick<State, 'todoData'> => {
+      const idx = todoData.findIndex((el) => el.id === id)
+      const oldItem = todoData[idx]
+      const newItem = { ...oldItem, done: !oldItem.done }
       return {
-        todoData: this.tooggleProperty(todoData, id, 'done'),
+        todoData: [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)],
       }
     })
   }
@@ -105,7 +99,7 @@ class App extends Component<object, State> {
   }
 
   counterTask = (): number => {
-    return this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
+    return this.state.todoData.filter((el) => el.done === false).length
   }
 
   render() {
