@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -14,17 +15,19 @@ class App extends Component<object, State> {
     filterValue: 'all',
   }
 
-  createTodoItem(label: string) {
+  createTodoItem(label: string, seconds: string, minutes: string) {
     return {
       label,
       done: false,
       id: uuidv4(),
       date: new Date(),
+      seconds,
+      minutes,
     }
   }
 
-  addItem = (text: string) => {
-    const newItem = this.createTodoItem(text)
+  addItem = (text: string, seconds: string, minutes: string) => {
+    const newItem = this.createTodoItem(text, seconds, minutes)
 
     this.setState(({ todoData }): Pick<State, 'todoData'> => {
       const newArr = [...todoData, newItem]
@@ -32,6 +35,7 @@ class App extends Component<object, State> {
         todoData: newArr,
       }
     })
+    return newItem.id
   }
 
   onToggleDone = (id: string): void => {
@@ -99,7 +103,7 @@ class App extends Component<object, State> {
   }
 
   counterTask = (): number => {
-    return this.state.todoData.filter((el) => el.done === false).length
+    return this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
   }
 
   render() {

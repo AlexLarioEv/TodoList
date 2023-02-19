@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 
 import { IDoto } from '../../types/data'
+import Timer from '../timer/timer'
 
 import './task.css'
 
@@ -49,7 +50,7 @@ class Task extends Component<Props, State> {
   }
 
   render() {
-    const { label, onToggleDone, done, date } = this.props
+    const { label, onToggleDone, done, date, seconds, minutes } = this.props
     const { isEditiong } = this.state
     const element = (
       <form className="form-task" onSubmit={this.onSubmit}>
@@ -62,8 +63,9 @@ class Task extends Component<Props, State> {
         <div className="view">
           <input className="toggle" type="checkbox" onClick={onToggleDone} checked={!!done} readOnly />
           <label>
-            <span className="description"> {label}</span>
-            <span className="created">{formatDistanceToNow(date, { addSuffix: true })}</span>
+            <span className="title"> {label}</span>
+            <Timer seconds={seconds} minutes={minutes}></Timer>
+            <span className="description">{formatDistanceToNow(date, { addSuffix: true })}</span>
           </label>
           <button className="icon icon-edit" onClick={this.onToggleChange}></button>
           <button className="icon icon-destroy" onClick={this.props.onDeleted}></button>

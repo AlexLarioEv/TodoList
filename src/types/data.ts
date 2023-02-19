@@ -3,6 +3,8 @@ export interface IDoto {
   done: boolean | string
   id: string
   date: Date
+  seconds: string
+  minutes: string
 }
 
 export interface IFilter {
