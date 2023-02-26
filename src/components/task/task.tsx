@@ -15,6 +15,7 @@ interface Props extends IDoto {
   onRename: (id: string, label: string) => void
   onToggleDone: () => void
   onDeleted: () => void
+  runTimer: (id: string, timeLeft: number) => void
 }
 
 class Task extends Component<Props, State> {
@@ -32,9 +33,8 @@ class Task extends Component<Props, State> {
   onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     this.setState(({ isEditiong }) => {
-      const newСondition = !isEditiong
       return {
-        isEditiong: newСondition,
+        isEditiong: !isEditiong,
       }
     })
     this.props.onRename(this.props.id, this.state.label)
@@ -42,15 +42,19 @@ class Task extends Component<Props, State> {
 
   onToggleChange = () => {
     this.setState(({ isEditiong }): Pick<State, 'isEditiong'> => {
-      const newСondition = !isEditiong
       return {
-        isEditiong: newСondition,
+        isEditiong: !isEditiong,
       }
     })
   }
 
+  deleteTask = () => {
+    clearTimeout(this.props.idTimer)
+    this.props.onDeleted()
+  }
+
   render() {
-    const { label, onToggleDone, done, date, seconds, minutes } = this.props
+    const { onToggleDone, runTimer, label, done, date, timeLeft, id, idTimer } = this.props
     const { isEditiong } = this.state
     const element = (
       <form className="form-task" onSubmit={this.onSubmit}>
@@ -62,13 +66,13 @@ class Task extends Component<Props, State> {
       <li className={isEditiong ? 'editing' : '' || done ? 'completed' : ''}>
         <div className="view">
           <input className="toggle" type="checkbox" onClick={onToggleDone} checked={!!done} readOnly />
-          <label>
-            <span className="title"> {label}</span>
-            <Timer seconds={seconds} minutes={minutes}></Timer>
+          <label htmlFor="#">
+            <span className="title"> {label} </span>
+            <Timer timeLeft={timeLeft} done={done} id={id} idTimer={idTimer} runTimer={runTimer}></Timer>
             <span className="description">{formatDistanceToNow(date, { addSuffix: true })}</span>
           </label>
           <button className="icon icon-edit" onClick={this.onToggleChange}></button>
-          <button className="icon icon-destroy" onClick={this.props.onDeleted}></button>
+          <button className="icon icon-destroy" onClick={this.deleteTask}></button>
         </div>
         {this.state.isEditiong ? element : null}
       </li>

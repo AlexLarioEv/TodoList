@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -15,19 +14,19 @@ class App extends Component<object, State> {
     filterValue: 'all',
   }
 
-  createTodoItem(label: string, seconds: string, minutes: string) {
+  createTodoItem(label: string, timeLeft: number) {
     return {
       label,
       done: false,
       id: uuidv4(),
       date: new Date(),
-      seconds,
-      minutes,
+      timeLeft,
+      idTimer: null,
     }
   }
 
-  addItem = (text: string, seconds: string, minutes: string) => {
-    const newItem = this.createTodoItem(text, seconds, minutes)
+  addItem = (text: string, timeLeft: number) => {
+    const newItem = this.createTodoItem(text, timeLeft)
 
     this.setState(({ todoData }): Pick<State, 'todoData'> => {
       const newArr = [...todoData, newItem]
@@ -106,6 +105,25 @@ class App extends Component<object, State> {
     return this.state.todoData.reduce((acc, el) => acc + (el.done === false ? 1 : 0), 0)
   }
 
+  runTimer = (id: string, timeLeft: number) => {
+    const idTimer = setInterval(() => {
+      timeLeft -= 1
+      this.setState(({ todoData }) => {
+        const idx = todoData.findIndex((el) => el.id === id)
+        const oldItem = todoData[idx]
+        const newItem = {
+          ...oldItem,
+          timeLeft,
+          idTimer,
+        }
+        const newData = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)]
+        return {
+          todoData: newData,
+        }
+      })
+    }, 1000)
+  }
+
   render() {
     const visableItem = this.filter(this.state.todoData, this.state.filterValue)
     return (
@@ -116,6 +134,7 @@ class App extends Component<object, State> {
           onDeleted={this.deletedTask}
           onToggleDone={this.onToggleDone}
           onRename={this.renameTask}
+          runTimer={this.runTimer}
         />
         <Footer
           onToggleAll={this.toggleFilter}

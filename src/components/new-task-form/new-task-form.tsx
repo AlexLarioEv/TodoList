@@ -6,11 +6,10 @@ interface State {
   label: string
   minutes: string
   seconds: string
-  id: string
 }
 
 interface Props {
-  addItem: (text: string, seconds: string, minutes: string) => string
+  addItem: (text: string, timeLeft: number) => string
 }
 
 class NewTaskForm extends Component<Props, State> {
@@ -18,7 +17,6 @@ class NewTaskForm extends Component<Props, State> {
     label: '',
     minutes: '',
     seconds: '',
-    id: '',
   }
 
   onLabeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -39,25 +37,12 @@ class NewTaskForm extends Component<Props, State> {
     })
   }
 
-  runTimer() {
-    let seconds = this.state.seconds
-    let minutes = this.state.minutes
-    setInterval(() => {
-      if (Number(seconds) >= 5) {
-        minutes = String(Number(minutes) + 1)
-        seconds = '0'
-      }
-      seconds = String(Number(seconds) + 1)
-    }, 1000)
-    return seconds
-  }
-
   onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    const timeLeft = Number(this.state.minutes) * 60 + Number(this.state.seconds)
     e.preventDefault()
     if (this.state.label.match(/\S/)) {
-      const id = this.props.addItem(this.state.label, this.state.seconds, this.state.minutes)
+      this.props.addItem(this.state.label, timeLeft)
       this.setState({
-        id,
         label: '',
         minutes: '',
         seconds: '',

@@ -1,50 +1,75 @@
 import React, { Component } from 'react'
 
 interface Props {
-  minutes: string
-  seconds: string
+  timeLeft: number
+  done: boolean
+  id: string
+  idTimer: any
+  runTimer: (id: string, timeLeft: number) => void
 }
 
 interface State {
-  minutes: string
-  seconds: string
   timeRunner: boolean
 }
 
 class Timer extends Component<Props, State> {
   state = {
-    minutes: this.props.minutes,
-    seconds: this.props.seconds,
-    timeRunner: true,
+    timeRunner: false,
   }
 
-  onClickPlay = () => {
+  onClickPlay: React.MouseEventHandler<HTMLButtonElement> = () => {
     this.setState({ timeRunner: true })
   }
 
-  onClickPause = () => {
+  onClickPause: React.MouseEventHandler<HTMLButtonElement> = () => {
     this.setState({ timeRunner: false })
   }
 
-  runTimer(seconds: string, minutes: string) {
-    setInterval(() => {
-      if (this.state.timeRunner) {
-        if (Number(seconds) <= 0) {
-          if (Number(minutes) <= 0) {
-            return this.setState({ timeRunner: false, seconds: 'Dzin!!!', minutes: 'Dzin' })
-          }
-          minutes = String(Number(minutes) - 1)
-          seconds = '60'
-        }
-        seconds = String(Number(seconds) - 1)
-        this.setState({ seconds, minutes })
+  stopTimer(id: NodeJS.Timer) {
+    clearTimeout(id)
+  }
+
+  formTime(timeLeft: number) {
+    const hours = Math.floor(timeLeft / 60 / 60)
+    const minutes = Math.floor(timeLeft / 60) - hours * 60
+    const seconds = timeLeft % 60
+    const formatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`
+    return formatted
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
+    if (
+      prevState.timeRunner !== this.state.timeRunner ||
+      prevProps.done !== this.props.done ||
+      prevProps.timeLeft !== this.props.timeLeft
+    ) {
+      if (
+        !this.props.done &&
+        this.state.timeRunner &&
+        prevProps.timeLeft === this.props.timeLeft &&
+        this.props.timeLeft > 0
+      ) {
+        this.props.runTimer(this.props.id, this.props.timeLeft)
       }
-    }, 1000)
-    return this.setState({ seconds, minutes })
+      if (!this.state.timeRunner || this.props.done || this.props.timeLeft <= 0) {
+        clearTimeout(this.props.idTimer)
+        this.setState({ timeRunner: false })
+      }
+    }
+  }
+
+  componentWillUnmount(): void {
+    window.localStorage.setItem('timeRunner', String(this.state.timeRunner))
   }
 
   componentDidMount(): void {
-    this.runTimer(this.state.seconds, this.state.minutes)
+    const timeRunner = window.localStorage.getItem('timeRunner')
+    window.localStorage.clear()
+    if (timeRunner !== 'null') {
+      this.setState({ timeRunner: JSON.parse(timeRunner!) })
+    }
   }
 
   render(): React.ReactNode {
@@ -52,7 +77,7 @@ class Timer extends Component<Props, State> {
       <span className="description">
         <button className="icon icon-play" onClick={this.onClickPlay}></button>
         <button className="icon icon-pause" onClick={this.onClickPause}></button>
-        {this.state.minutes.padStart(2, '0')}:{this.state.seconds.padStart(2, '0')}
+        {this.props.timeLeft > 0 ? this.formTime(this.props.timeLeft) : 'ding-dong'}
       </span>
     )
   }
