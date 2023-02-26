@@ -16,6 +16,7 @@ interface Props extends IDoto {
   onToggleDone: () => void
   onDeleted: () => void
   runTimer: (id: string, timeLeft: number) => void
+  deleteTimer: (id: string, idTimer: any) => void
 }
 
 class Task extends Component<Props, State> {
@@ -54,7 +55,7 @@ class Task extends Component<Props, State> {
   }
 
   render() {
-    const { onToggleDone, runTimer, label, done, date, timeLeft, id, idTimer } = this.props
+    const { onToggleDone, runTimer, deleteTimer, label, done, date, timeLeft, id, idTimer } = this.props
     const { isEditiong } = this.state
     const element = (
       <form className="form-task" onSubmit={this.onSubmit}>
@@ -68,7 +69,14 @@ class Task extends Component<Props, State> {
           <input className="toggle" type="checkbox" onClick={onToggleDone} checked={!!done} readOnly />
           <label htmlFor="#">
             <span className="title"> {label} </span>
-            <Timer timeLeft={timeLeft} done={done} id={id} idTimer={idTimer} runTimer={runTimer}></Timer>
+            <Timer
+              timeLeft={timeLeft}
+              done={done}
+              id={id}
+              idTimer={idTimer}
+              runTimer={runTimer}
+              deleteTimer={deleteTimer}
+            ></Timer>
             <span className="description">{formatDistanceToNow(date, { addSuffix: true })}</span>
           </label>
           <button className="icon icon-edit" onClick={this.onToggleChange}></button>

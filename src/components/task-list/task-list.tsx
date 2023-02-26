@@ -11,11 +11,12 @@ interface ListProps {
   onToggleDone: (id: string) => void
   onRename: (id: string, text: string) => void
   runTimer: (id: string, timeLeft: number) => void
+  deleteTimer: (id: string, idTimer: any) => void
 }
 
 class TaskList extends Component<ListProps, object> {
   render() {
-    const { todos, onDeleted, onToggleDone, onRename, runTimer } = this.props
+    const { todos, onDeleted, onToggleDone, onRename, runTimer, deleteTimer } = this.props
     const elements = todos.map((item) => {
       const { id, label, ...itemProps } = item
 
@@ -26,9 +27,10 @@ class TaskList extends Component<ListProps, object> {
           id={id}
           label={label}
           onRename={onRename}
+          runTimer={runTimer}
+          deleteTimer={deleteTimer}
           onDeleted={() => onDeleted(id)}
           onToggleDone={() => onToggleDone(id)}
-          runTimer={runTimer}
         />
       )
     })

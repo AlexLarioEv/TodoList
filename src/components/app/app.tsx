@@ -122,6 +122,24 @@ class App extends Component<object, State> {
         }
       })
     }, 1000)
+    console.log(idTimer)
+  }
+
+  deleteTimer = (id: string, idTimer: any) => {
+    clearTimeout(idTimer)
+    this.setState(({ todoData }) => {
+      idTimer = null
+      const idx = todoData.findIndex((el) => el.id === id)
+      const oldItem = todoData[idx]
+      const newItem = {
+        ...oldItem,
+        idTimer,
+      }
+      const newData = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)]
+      return {
+        todoData: newData,
+      }
+    })
   }
 
   render() {
@@ -135,6 +153,7 @@ class App extends Component<object, State> {
           onToggleDone={this.onToggleDone}
           onRename={this.renameTask}
           runTimer={this.runTimer}
+          deleteTimer={this.deleteTimer}
         />
         <Footer
           onToggleAll={this.toggleFilter}

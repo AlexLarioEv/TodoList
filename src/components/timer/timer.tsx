@@ -6,6 +6,7 @@ interface Props {
   id: string
   idTimer: any
   runTimer: (id: string, timeLeft: number) => void
+  deleteTimer: (id: string, idTimer: any) => void
 }
 
 interface State {
@@ -49,24 +50,25 @@ class Timer extends Component<Props, State> {
         !this.props.done &&
         this.state.timeRunner &&
         prevProps.timeLeft === this.props.timeLeft &&
-        this.props.timeLeft > 0
+        this.props.timeLeft > 0 &&
+        !this.props.idTimer
       ) {
         this.props.runTimer(this.props.id, this.props.timeLeft)
       }
       if (!this.state.timeRunner || this.props.done || this.props.timeLeft <= 0) {
-        clearTimeout(this.props.idTimer)
+        this.props.deleteTimer(this.props.id, this.props.idTimer)
         this.setState({ timeRunner: false })
       }
     }
   }
 
   componentWillUnmount(): void {
-    window.localStorage.setItem('timeRunner', String(this.state.timeRunner))
+    window.localStorage.setItem(`timeRunner${this.props.idTimer}`, String(this.state.timeRunner))
   }
 
   componentDidMount(): void {
-    const timeRunner = window.localStorage.getItem('timeRunner')
-    window.localStorage.clear()
+    const timeRunner = window.localStorage.getItem(`timeRunner${this.props.idTimer}`)
+    window.localStorage.removeItem(`timeRunner${this.props.idTimer}`)
     if (timeRunner !== 'null') {
       this.setState({ timeRunner: JSON.parse(timeRunner!) })
     }
