@@ -122,7 +122,6 @@ class App extends Component<object, State> {
         }
       })
     }, 1000)
-    console.log(idTimer)
   }
 
   deleteTimer = (id: string, idTimer: any) => {
