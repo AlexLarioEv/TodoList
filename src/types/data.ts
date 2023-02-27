@@ -1,8 +1,10 @@
 export interface IDoto {
   label: string
-  done: boolean | string
+  done: boolean
   id: string
   date: Date
+  timeLeft: number
+  idTimer: any
 }
 
 export interface IFilter {
