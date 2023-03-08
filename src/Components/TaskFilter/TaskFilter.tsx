@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import { IFilter } from '../../types/data'
+import { IFilter } from '../../Types/Data'
 
-import './task-filter.css'
+import './TaskFilter.css'
 
 interface Props extends IFilter {
   onToggleAll: () => void
