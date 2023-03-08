@@ -4,13 +4,13 @@ interface Props {
   timeLeft: number
   done: boolean
   id: string
-  runTimer: (id: string, timeLeft: number, timeRunner: boolean) => number
+  runTimer: (id: string, timeLeft: number, timeRunner: boolean) => NodeJS.Timer
 }
 
 const TaskTimer: React.FC<Props> = (props) => {
   const { timeLeft, done, id, runTimer } = props
   const [timeRunner, setTimeRunner] = useState(false)
-  const interavalRef = useRef(0)
+  const interavalRef = useRef<NodeJS.Timer>()
 
   const onClickPlay: React.MouseEventHandler<HTMLButtonElement> = () => {
     setTimeRunner(true)

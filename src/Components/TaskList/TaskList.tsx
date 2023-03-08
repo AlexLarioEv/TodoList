@@ -10,7 +10,7 @@ interface ListProps {
   onDeleted: (id: string) => void
   onToggleDone: (id: string) => void
   onRename: (id: string, text: string) => void
-  runTimer: (id: string, timeLeft: number, timeRunner: boolean) => number
+  runTimer: (id: string, timeLeft: number, timeRunner: boolean) => NodeJS.Timer
 }
 
 const TaskList: React.FC<ListProps> = (props) => {
